@@ -1,15 +1,8 @@
-FROM node:14-alpine
+FROM mirror.gcr.io/node:20.4.0
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-COPY package.json /usr/src/app/
-RUN npm install && npm cache clean --force
-COPY . /usr/src/app
-
-CMD [ "npm", "start" ]
-
-HEALTHCHECK  --interval=5m --timeout=3s \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
-
+WORKDIR /arenavsbot
+COPY package*.json ./
+RUN npm i
+COPY . .
 EXPOSE 3000
+CMD [ "npm", "start" ]
